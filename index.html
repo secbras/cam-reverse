@@ -1,555 +1,1775 @@
 <!DOCTYPE html>
+
+
+
 <html lang="pt-BR">
+
+
 <head>
+
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MetaView - Visualizador de Metadados</title>
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>EXIF Viewer - Visualizador de Metadados</title>
+
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
     <script src="https://cdn.jsdelivr.net/npm/exif-js@2.3.0/exif.min.js"></script>
+
+
     <style>
+
+
         :root {
+
+
             --primary: #4361ee;
+
+
             --primary-dark: #3a56d4;
+
+
             --secondary: #3f37c9;
+
+
             --dark: #1a1a2e;
+
+
             --darker: #16213e;
+
+
             --light: #f8f9fa;
+
+
             --gray: #6c757d;
+
+
             --success: #4cc9f0;
+
+
             --warning: #f8961e;
+
+
             --danger: #f94144;
-            --xmp-color: #ff9f1c;
-            --iptc-color: #2ec4b6;
+
+
         }
+
+
         
+
+
         * {
+
+
             box-sizing: border-box;
+
+
             margin: 0;
+
+
             padding: 0;
+
+
         }
+
+
         
+
+
         body {
+
+
             font-family: 'Poppins', sans-serif;
+
+
             background: linear-gradient(135deg, var(--darker), var(--dark));
+
+
             color: var(--light);
+
+
             min-height: 100vh;
+
+
             line-height: 1.6;
-            overflow-x: hidden;
+
+
+            -webkit-text-size-adjust: 100%;
+
+
+            -webkit-font-smoothing: antialiased;
+
+
         }
+
+
         
+
+
         .container {
+
+
             width: 100%;
-            max-width: 1200px;
+
+
+            max-width: 1000px;
+
+
             margin: 0 auto;
-            padding: 1rem;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .logo i {
-            font-size: 2rem;
-            color: var(--success);
-        }
-        
-        h1 {
-            font-weight: 600;
-            margin: 0.5rem 0;
-            font-size: 2rem;
-            background: linear-gradient(to right, var(--success), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .subtitle {
-            color: var(--gray);
-            font-weight: 300;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-        }
-        
-        .upload-container {
-            background: rgba(30, 30, 46, 0.7);
-            backdrop-filter: blur(10px);
+
+
             padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-            margin-bottom: 1.5rem;
+
+
+        }
+
+
+        
+
+
+        header {
+
+
             text-align: center;
-            border: 2px dashed rgba(67, 97, 238, 0.3);
-            transition: all 0.3s ease;
-        }
-        
-        .upload-container:hover {
-            border-color: var(--primary);
-        }
-        
-        .file-input-wrapper {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 1rem;
-        }
-        
-        .upload-btn {
-            padding: 0.75rem 1.5rem;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Poppins', sans-serif;
-        }
-        
-        .upload-btn:hover {
-            background: var(--primary-dark);
-        }
-        
-        .file-input-wrapper input {
-            position: absolute;
-            left: 0;
-            top: 0;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-        }
-        
-        .preview-container {
-            margin: 1.5rem 0;
-            text-align: center;
-        }
-        
-        #imagePreview {
-            max-width: 100%;
-            max-height: 300px;
-            border-radius: 8px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-            display: none;
-        }
-        
-        .metadata-tabs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        
-        .tab-btn {
-            padding: 0.5rem 1rem;
-            background: rgba(67, 97, 238, 0.1);
-            border: none;
-            border-radius: 6px;
-            color: var(--light);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-        
-        .tab-btn.active {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .tab-btn:hover {
-            background: rgba(67, 97, 238, 0.3);
-        }
-        
-        .metadata-content {
-            display: none;
-        }
-        
-        .metadata-content.active {
-            display: block;
-        }
-        
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
+
+
             margin-bottom: 1.5rem;
+
+
+            padding: 0 0.5rem;
+
+
         }
+
+
         
-        .info-box {
-            background: rgba(30, 30, 46, 0.7);
-            backdrop-filter: blur(10px);
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .info-box h3 {
-            margin-bottom: 0.75rem;
+
+
+        .logo {
+
+
             display: flex;
+
+
             align-items: center;
+
+
+            justify-content: center;
+
+
             gap: 0.5rem;
+
+
+            margin-bottom: 0.75rem;
+
+
+        }
+
+
+        
+
+
+        .logo i {
+
+
+            font-size: clamp(1.5rem, 5vw, 2rem);
+
+
             color: var(--success);
-            border-bottom: 1px solid rgba(67, 97, 238, 0.2);
-            padding-bottom: 0.5rem;
-            font-size: 1rem;
+
+
         }
+
+
         
-        .info-item {
-            margin-bottom: 0.5rem;
+
+
+        h1 {
+
+
+            font-weight: 600;
+
+
+            color: white;
+
+
+            margin: 0.5rem 0;
+
+
+            font-size: clamp(1.5rem, 6vw, 2.2rem);
+
+
+            background: linear-gradient(to right, var(--success), var(--primary));
+
+
+            -webkit-background-clip: text;
+
+
+            -webkit-text-fill-color: transparent;
+
+
+            line-height: 1.2;
+
+
         }
+
+
         
-        .info-item strong {
-            display: block;
+
+
+        .subtitle {
+
+
             color: var(--gray);
-            font-weight: 400;
-            font-size: 0.8rem;
-            margin-bottom: 0.1rem;
+
+
+            font-weight: 300;
+
+
+            margin-bottom: 1rem;
+
+
+            font-size: clamp(0.875rem, 3vw, 1rem);
+
+
         }
+
+
         
-        .info-item span {
-            word-break: break-word;
-            font-size: 0.9rem;
-        }
-        
-        .gps-badge {
-            background: rgba(248, 150, 30, 0.1);
-            color: var(--warning);
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            display: inline-block;
-            margin-left: 0.3rem;
-        }
-        
-        .footer {
+
+
+        .upload-container {
+
+
+            background: rgba(30, 30, 46, 0.7);
+
+
+            backdrop-filter: blur(10px);
+
+
+            padding: 1.5rem;
+
+
+            border-radius: 12px;
+
+
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+
+
+            margin-bottom: 1.5rem;
+
+
+            width: 100%;
+
+
             text-align: center;
-            margin-top: 2rem;
-            color: var(--gray);
-            font-size: 0.8rem;
+
+
+            border: 2px dashed rgba(67, 97, 238, 0.3);
+
+
+            transition: all 0.3s ease;
+
+
         }
+
+
         
+
+
+        .upload-container:hover {
+
+
+            border-color: var(--primary);
+
+
+        }
+
+
+        
+
+
+        .upload-container.dragover {
+
+
+            background: rgba(67, 97, 238, 0.1);
+
+
+            border-color: var(--primary);
+
+
+        }
+
+
+        
+
+
+        .upload-btn {
+
+
+            position: relative;
+
+
+            overflow: hidden;
+
+
+            display: inline-block;
+
+
+        }
+
+
+        
+
+
+        .upload-btn input {
+
+
+            position: absolute;
+
+
+            left: 0;
+
+
+            top: 0;
+
+
+            opacity: 0;
+
+
+            width: 100%;
+
+
+            height: 100%;
+
+
+            cursor: pointer;
+
+
+        }
+
+
+        
+
+
+        .preview-container {
+
+
+            margin: 1.5rem 0;
+
+
+            text-align: center;
+
+
+        }
+
+
+        
+
+
+        #imagePreview {
+
+
+            max-width: 100%;
+
+
+            max-height: 300px;
+
+
+            border-radius: 8px;
+
+
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+
+
+            display: none;
+
+
+        }
+
+
+        
+
+
+        #map {
+
+
+            width: 100%;
+
+
+            height: 300px;
+
+
+            min-height: 250px;
+
+
+            border-radius: 12px;
+
+
+            margin: 1.5rem 0;
+
+
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+
+
+            overflow: hidden;
+
+
+            border: 2px solid rgba(67, 97, 238, 0.2);
+
+
+            display: none;
+
+
+        }
+
+
+        
+
+
         @media (min-width: 768px) {
-            .container {
-                padding: 2rem;
+
+
+            #map {
+
+
+                height: 350px;
+
+
             }
-            
-            h1 {
-                font-size: 2.5rem;
-            }
-            
-            .subtitle {
-                font-size: 1rem;
-            }
-            
-            .upload-container {
-                padding: 2rem;
-            }
-            
-            .info-grid {
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-                gap: 1.5rem;
-            }
-            
-            .info-box {
-                padding: 1.5rem;
-            }
-            
-            .tab-btn {
-                padding: 0.75rem 1.5rem;
-                font-size: 1rem;
-            }
+
+
         }
+
+
+        
+
+
+        .info-container {
+
+
+            display: grid;
+
+
+            grid-template-columns: 1fr;
+
+
+            gap: 1rem;
+
+
+            margin-bottom: 1.5rem;
+
+
+        }
+
+
+        
+
+
+        @media (min-width: 600px) {
+
+
+            .info-container {
+
+
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+
+
+                gap: 1.25rem;
+
+
+            }
+
+
+        }
+
+
+        
+
+
+        .info-box {
+
+
+            background: rgba(30, 30, 46, 0.7);
+
+
+            backdrop-filter: blur(10px);
+
+
+            padding: 1.25rem;
+
+
+            border-radius: 12px;
+
+
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+
+
+            transition: transform 0.3s ease;
+
+
+            width: 100%;
+
+
+        }
+
+
+        
+
+
+        .info-box:hover {
+
+
+            transform: translateY(-3px);
+
+
+        }
+
+
+        
+
+
+        .info-box h3 {
+
+
+            margin: 0 0 0.75rem 0;
+
+
+            color: var(--success);
+
+
+            font-size: 1rem;
+
+
+            display: flex;
+
+
+            align-items: center;
+
+
+            gap: 0.5rem;
+
+
+            border-bottom: 1px solid rgba(67, 97, 238, 0.2);
+
+
+            padding-bottom: 0.5rem;
+
+
+        }
+
+
+        
+
+
+        .info-box p {
+
+
+            margin: 0.75rem 0;
+
+
+            line-height: 1.5;
+
+
+            font-size: 0.9rem;
+
+
+            word-break: break-word;
+
+
+        }
+
+
+        
+
+
+        .info-box span {
+
+
+            font-weight: 500;
+
+
+            color: white;
+
+
+        }
+
+
+        
+
+
+        .gps-info {
+
+
+            color: var(--warning);
+
+
+            font-weight: 500;
+
+
+        }
+
+
+        
+
+
+        .no-data {
+
+
+            color: var(--gray);
+
+
+            font-style: italic;
+
+
+        }
+
+
+        
+
+
+        button {
+
+
+            padding: 0.75rem 1.5rem;
+
+
+            border: none;
+
+
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+
+
+            color: white;
+
+
+            border-radius: 8px;
+
+
+            cursor: pointer;
+
+
+            font-size: 0.95rem;
+
+
+            font-weight: 500;
+
+
+            transition: all 0.3s ease;
+
+
+            display: inline-flex;
+
+
+            align-items: center;
+
+
+            justify-content: center;
+
+
+            gap: 0.5rem;
+
+
+        }
+
+
+        
+
+
+        button:hover {
+
+
+            background: linear-gradient(to right, var(--primary-dark), var(--secondary));
+
+
+            transform: translateY(-2px);
+
+
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+
+
+        }
+
+
+        
+
+
+        button:active {
+
+
+            transform: translateY(0);
+
+
+        }
+
+
+        
+
+
+        .btn-secondary {
+
+
+            background: rgba(67, 97, 238, 0.1);
+
+
+            border: 1px solid rgba(67, 97, 238, 0.3);
+
+
+        }
+
+
+        
+
+
+        .btn-secondary:hover {
+
+
+            background: rgba(67, 97, 238, 0.2);
+
+
+        }
+
+
+        
+
+
+        .footer {
+
+
+            text-align: center;
+
+
+            margin-top: 2rem;
+
+
+            color: var(--gray);
+
+
+            font-size: 0.85rem;
+
+
+            padding: 0 0.5rem;
+
+
+        }
+
+
+        
+
+
+        .footer a {
+
+
+            color: var(--success);
+
+
+            text-decoration: none;
+
+
+            transition: color 0.2s ease;
+
+
+        }
+
+
+        
+
+
+        .footer a:hover {
+
+
+            color: var(--primary);
+
+
+        }
+
+
     </style>
+
+
 </head>
+
+
 <body>
+
+
     <div class="container">
+
+
         <header>
+
+
             <div class="logo">
-                <i class="fas fa-database"></i>
-                <h1>MetaView</h1>
+
+
+                <i class="fas fa-camera-retro"></i>
+
+
+                <h1>EXIF Viewer</h1>
+
+
             </div>
-            <p class="subtitle">Visualizador avançado de metadados de imagens</p>
+
+
+            <p class="subtitle">Visualizador de metadados de imagens</p>
+
+
         </header>
+
+
         
+
+
         <div class="upload-container" id="dropZone">
-            <div class="file-input-wrapper">
-                <button class="upload-btn">
+
+
+            <div class="upload-btn">
+
+
+                <button>
+
+
                     <i class="fas fa-upload"></i> Selecione uma imagem
+
+
                 </button>
+
+
                 <input type="file" id="fileInput" accept="image/*">
+
+
             </div>
-            <p style="color: var(--gray); margin-top: 1rem; font-size: 0.9rem;">Arraste e solte qualquer imagem aqui</p>
+
+
+            <p style="margin-top: 1rem; color: var(--gray);">ou arraste e solte a imagem aqui</p>
+
+
         </div>
+
+
         
+
+
         <div class="preview-container">
-            <img id="imagePreview" alt="Pré-visualização">
+
+
+            <img id="imagePreview" alt="Pré-visualização da imagem">
+
+
         </div>
+
+
         
-        <div class="metadata-tabs" id="tabsContainer">
-            <button class="tab-btn active" data-tab="basic">Básico</button>
-            <button class="tab-btn" data-tab="exif">EXIF</button>
-            <button class="tab-btn" data-tab="iptc">IPTC</button>
-            <button class="tab-btn" data-tab="gps">Localização</button>
-        </div>
+
+
+        <div id="map"></div>
+
+
         
-        <div class="metadata-content active" id="basicTab">
-            <div class="info-grid">
-                <div class="info-box">
-                    <h3><i class="fas fa-info-circle"></i> Informações do Arquivo</h3>
-                    <div class="info-item">
-                        <strong>Nome</strong>
-                        <span id="fileName">Nenhuma imagem carregada</span>
-                    </div>
-                    <div class="info-item">
-                        <strong>Tipo</strong>
-                        <span id="fileType">--</span>
-                    </div>
-                    <div class="info-item">
-                        <strong>Tamanho</strong>
-                        <span id="fileSize">--</span>
-                    </div>
-                    <div class="info-item">
-                        <strong>Dimensões</strong>
-                        <span id="imageDimensions">--</span>
-                    </div>
-                </div>
-                
-                <div class="info-box">
-                    <h3><i class="fas fa-calendar-alt"></i> Datas</h3>
-                    <div class="info-item">
-                        <strong>Criação</strong>
-                        <span id="creationDate">--</span>
-                    </div>
-                    <div class="info-item">
-                        <strong>Modificação</strong>
-                        <span id="modificationDate">--</span>
-                    </div>
-                </div>
+
+
+        <div class="info-container">
+
+
+            <div class="info-box">
+
+
+                <h3><i class="fas fa-info-circle"></i> Informações Básicas</h3>
+
+
+                <p><strong>Nome do arquivo:</strong> <span id="fileName" class="no-data">Nenhuma imagem carregada</span></p>
+
+
+                <p><strong>Tamanho:</strong> <span id="fileSize" class="no-data">--</span></p>
+
+
+                <p><strong>Tipo:</strong> <span id="fileType" class="no-data">--</span></p>
+
+
+                <p><strong>Dimensões:</strong> <span id="imageDimensions" class="no-data">--</span></p>
+
+
             </div>
-        </div>
-        
-        <div class="metadata-content" id="exifTab">
-            <div class="info-grid">
-                <div class="info-box">
-                    <h3><i class="fas fa-camera"></i> Câmera</h3>
-                    <div class="info-item">
-                        <strong>Marca</strong>
-                        <span id="exifMake">--</span>
-                    </div>
-                    <div class="info-item">
-                        <strong>Modelo</strong>
-                        <span id="exifModel">--</span>
-                    </div>
-                    <div class="info-item">
-                        <strong>Configuração</strong>
-                        <span id="exifExposure">--</span>
-                    </div>
-                </div>
-                
-                <div class="info-box">
-                    <h3><i class="fas fa-cogs"></i> Configurações</h3>
-                    <div class="info-item">
-                        <strong>Orientação</strong>
-                        <span id="exifOrientation">--</span>
-                    </div>
-                    <div class="info-item">
-                        <strong>Flash</strong>
-                        <span id="exifFlash">--</span>
-                    </div>
-                    <div class="info-item">
-                        <strong>Distância focal</strong>
-                        <span id="exifFocalLength">--</span>
-                    </div>
-                </div>
+
+
+            
+
+
+            <div class="info-box">
+
+
+                <h3><i class="fas fa-calendar-alt"></i> Datas</h3>
+
+
+                <p><strong>Data de criação:</strong> <span id="dateCreated" class="no-data">--</span></p>
+
+
+                <p><strong>Data de modificação:</strong> <span id="dateModified" class="no-data">--</span></p>
+
+
+                <p><strong>Data digitalizada:</strong> <span id="dateDigitized" class="no-data">--</span></p>
+
+
             </div>
-        </div>
-        
-        <div class="metadata-content" id="iptcTab">
-            <div class="info-grid">
-                <div class="info-box">
-                    <h3><i class="fas fa-user"></i> Autor</h3>
-                    <div class="info-item">
-                        <strong>Criador</strong>
-                        <span id="iptcCreator">--</span>
-                    </div>
-                    <div class="info-item">
-                        <strong>Direitos</strong>
-                        <span id="iptcCopyright">--</span>
-                    </div>
-                </div>
-                
-                <div class="info-box">
-                    <h3><i class="fas fa-tags"></i> Conteúdo</h3>
-                    <div class="info-item">
-                        <strong>Título</strong>
-                        <span id="iptcTitle">--</span>
-                    </div>
-                    <div class="info-item">
-                        <strong>Descrição</strong>
-                        <span id="iptcDescription">--</span>
-                    </div>
-                    <div class="info-item">
-                        <strong>Palavras-chave</strong>
-                        <span id="iptcKeywords">--</span>
-                    </div>
-                </div>
+
+
+            
+
+
+            <div class="info-box">
+
+
+                <h3><i class="fas fa-camera"></i> Dados da Câmera</h3>
+
+
+                <p><strong>Marca:</strong> <span id="make" class="no-data">--</span></p>
+
+
+                <p><strong>Modelo:</strong> <span id="model" class="no-data">--</span></p>
+
+
+                <p><strong>Orientação:</strong> <span id="orientation" class="no-data">--</span></p>
+
+
+                <p><strong>Configuração:</strong> <span id="exposure" class="no-data">--</span></p>
+
+
             </div>
-        </div>
-        
-        <div class="metadata-content" id="gpsTab">
-            <div class="info-grid">
-                <div class="info-box">
-                    <h3><i class="fas fa-map-marker-alt"></i> Coordenadas</h3>
-                    <div class="info-item">
-                        <strong>Latitude</strong>
-                        <span id="gpsLatitude">--</span>
-                    </div>
-                    <div class="info-item">
-                        <strong>Longitude</strong>
-                        <span id="gpsLongitude">--</span>
-                    </div>
-                    <div class="info-item">
-                        <strong>Altitude</strong>
-                        <span id="gpsAltitude">--</span>
-                    </div>
-                    <button id="viewMapBtn" class="tab-btn" style="margin-top: 1rem; display: none; width: 100%;">
-                        <i class="fas fa-map"></i> Ver no mapa
-                    </button>
-                </div>
-                
-                <div class="info-box">
-                    <h3><i class="fas fa-map"></i> Mapa</h3>
-                    <div id="map" style="height: 200px; border-radius: 8px; overflow: hidden; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; color: var(--gray);">
-                        Nenhuma localização disponível
-                    </div>
-                </div>
+
+
+            
+
+
+            <div class="info-box">
+
+
+                <h3><i class="fas fa-map-marked-alt"></i> Localização</h3>
+
+
+                <p><strong>GPS:</strong> <span id="gpsData" class="no-data">--</span></p>
+
+
+                <p><strong>Latitude:</strong> <span id="gpsLat" class="no-data">--</span></p>
+
+
+                <p><strong>Longitude:</strong> <span id="gpsLng" class="no-data">--</span></p>
+
+
+                <button id="viewMapBtn" class="btn-secondary" style="margin-top: 0.5rem; display: none;">
+
+
+                    <i class="fas fa-map"></i> Ver no mapa
+
+
+                </button>
+
+
             </div>
+
+
         </div>
+
+
         
+
+
         <div class="footer">
-            <p>Desenvolvido com <i class="fas fa-heart" style="color: var(--danger);"></i> por <a href="#" style="color: var(--success); text-decoration: none;">SecBras</a></p>
+
+
+            <p>Desenvolvido por <a href="#" target="_blank">SecBras</a> &copy; <span id="year"></span> | Todos os direitos reservados</p>
+
+
         </div>
+
+
     </div>
 
+
+
+
+
     <script>
+
+
+        // Atualiza o ano no footer
+
+
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+
+        
+
+
         // Elementos DOM
+
+
         const fileInput = document.getElementById('fileInput');
+
+
         const dropZone = document.getElementById('dropZone');
+
+
         const imagePreview = document.getElementById('imagePreview');
-        const tabsContainer = document.getElementById('tabsContainer');
-        const tabButtons = document.querySelectorAll('.tab-btn');
-        const tabContents = document.querySelectorAll('.metadata-content');
-        const viewMapBtn = document.getElementById('viewMapBtn');
+
+
         const mapElement = document.getElementById('map');
+
+
+        const viewMapBtn = document.getElementById('viewMapBtn');
+
+
         
-        // Ativar abas
-        tabsContainer.addEventListener('click', (e) => {
-            if (e.target.classList.contains('tab-btn')) {
-                const tabId = e.target.getAttribute('data-tab');
-                
-                // Atualizar botões
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                e.target.classList.add('active');
-                
-                // Atualizar conteúdos
-                tabContents.forEach(content => content.classList.remove('active'));
-                document.getElementById(`${tabId}Tab`).classList.add('active');
-            }
-        });
-        
-        // Formatadores
-        const formatFileSize = (bytes) => {
+
+
+        // Função para formatar bytes para KB/MB
+
+
+        function formatFileSize(bytes) {
+
+
             if (!bytes) return '--';
+
+
+            if (bytes === 0) return '0 Bytes';
+
+
+            const k = 1024;
+
+
             const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(1024));
-            return parseFloat((bytes / Math.pow(1024, i)).toFixed(2)) + ' ' + sizes[i];
-        };
+
+
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+
+
+        }
+
+
         
-        const formatDate = (dateString) => {
+
+
+        // Função para formatar data
+
+
+        function formatDate(dateString) {
+
+
             if (!dateString) return '--';
-            try {
-                // Tentar parsear datas no formato EXIF
-                if (dateString.includes(':')) {
-                    const [datePart, timePart] = dateString.split(' ');
-                    const [year, month, day] = datePart.split(':');
-                    const [hour, minute, second] = timePart.split(':');
-                    const date = new Date(year, month-1, day, hour, minute, second);
-                    return date.toLocaleString();
-                }
-                return new Date(dateString).toLocaleString() || '--';
-            } catch {
-                return dateString || '--';
-            }
-        };
-        
-        // Processar metadados EXIF
-        const processEXIF = (exifData) => {
-            // Informações da câmera
-            document.getElementById('exifMake').textContent = exifData.Make || '--';
-            document.getElementById('exifModel').textContent = exifData.Model || '--';
+
+
             
-            // Configurações
-            document.getElementById('exifOrientation').textContent = exifData.Orientation || '--';
-            document.getElementById('exifFlash').textContent = exifData.Flash ? 'Sim' : 'Não';
-            document.getElementById('exifFocalLength').textContent = exifData.FocalLength ? `${exifData.FocalLength}mm` : '--';
-            
-            // Exposição
-            let exposureText = '';
-            if (exifData.ExposureTime) exposureText += `${exifData.ExposureTime}s `;
-            if (exifData.FNumber) exposureText += `f/${exifData.FNumber} `;
-            if (exifData.ISOSpeedRatings) exposureText += `ISO ${exifData.ISOSpeedRatings}`;
-            document.getElementById('exifExposure').textContent = exposureText || '--';
-            
-            // Processar GPS
-            processGPS(exifData);
-        };
-        
-        // Nova função para extrair IPTC que funciona em dispositivos móveis
-        const extractIPTC = (file, callback) => {
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                const buffer = e.target.result;
-                const dataView = new DataView(buffer);
-                let iptcData = {};
+
+
+            // Formatar datas no padrão EXIF (YYYY:MM:DD HH:MM:SS)
+
+
+            if (dateString.includes(':')) {
+
+
+                const parts = dateString.split(' ');
+
+
+                const dateParts = parts[0].split(':');
+
+
+                const timeParts = parts[1] ? parts[1].split(':') : ['00', '00', '00'];
+
+
                 
-                // Procurar pelo marcador APP13 (0xFFED) que contém dados IPTC
-                let offset = 0;
-                while (offset < dataView.byteLength - 1) {
-                    const marker = dataView.getUint16(offset);
-                    offset += 2;
-                    
-                    if (marker === 0xFFED) { // APP13 marker
-                        const length = dataView.getUint16(offset);
-                        offset += 2;
-                        
-                        // Procurar por dados IPTC dentro do segmento APP13
-                        const signature = String.fromCharCode(
-                            dataView.getUint8(offset),
-                            dataView.getUint8(offset + 1),
-                            dataView.getUint8(offset + 2),
-                            dataView.getUint8(offset + 3),
-                            dataView.getUint8(offset + 4),
-                            dataView.getUint8(offset + 5)
-                        );
-                        
-                        if (signature === "Photoshop") {
-                            offset += 6; // Pular assinatura "Photoshop"
+
+
+                const date = new Date(
+
+
+                    parseInt(dateParts[0]), 
+
+
+                    parseInt(dateParts[1]) - 1, 
+
+
+                    parseInt(dateParts[2]),
+
+
+                    parseInt(timeParts[0]),
+
+
+                    parseInt(timeParts[1]),
+
+
+                    parseInt(timeParts[2])
+
+
+                );
+
+
+                
+
+
+                return date.toLocaleString();
+
+
+            }
+
+
+            
+
+
+            return dateString;
+
+
+        }
+
+
+        
+
+
+        // Função para converter graus/minutos/segundos para decimal
+
+
+        function convertDMSToDecimal(degrees, minutes, seconds, direction) {
+
+
+            if (!degrees || !minutes || !seconds || !direction) return null;
+
+
+            
+
+
+            let decimal = degrees + (minutes / 60) + (seconds / 3600);
+
+
+            if (direction === 'S' || direction === 'W') {
+
+
+                decimal = -decimal;
+
+
+            }
+
+
+            return decimal.toFixed(6);
+
+
+        }
+
+
+        
+
+
+        // Função para extrair dados GPS
+
+
+        function extractGPSCoordinates(exifData) {
+
+
+            try {
+
+
+                if (!exifData.GPSLatitude || !exifData.GPSLongitude || 
+
+
+                    !exifData.GPSLatitudeRef || !exifData.GPSLongitudeRef) {
+
+
+                    return null;
+
+
+                }
+
+
+                
+
+
+                const lat = convertDMSToDecimal(
+
+
+                    exifData.GPSLatitude[0], 
+
+
+                    exifData.GPSLatitude[1], 
+
+
+                    exifData.GPSLatitude[2], 
+
+
+                    exifData.GPSLatitudeRef
+
+
+                );
+
+
+                
+
+
+                const lng = convertDMSToDecimal(
+
+
+                    exifData.GPSLongitude[0], 
+
+
+                    exifData.GPSLongitude[1], 
+
+
+                    exifData.GPSLongitude[2], 
+
+
+                    exifData.GPSLongitudeRef
+
+
+                );
+
+
+                
+
+
+                return { lat, lng };
+
+
+            } catch (e) {
+
+
+                console.error('Erro ao extrair coordenadas GPS:', e);
+
+
+                return null;
+
+
+            }
+
+
+        }
+
+
+        
+
+
+        // Função para atualizar o mapa
+
+
+        function updateMap(lat, lng) {
+
+
+            if (!lat || !lng) return;
+
+
+            
+
+
+            mapElement.style.display = 'block';
+
+
+            mapElement.innerHTML = `
+
+
+                <iframe 
+
+
+                    src="https://maps.google.com/maps?q=${lat},${lng}&z=15&output=embed&hl=pt" 
+
+
+                    width="100%" 
+
+
+                    height="100%" 
+
+
+                    frameborder="0" 
+
+
+                    style="border:0" 
+
+
+                    allowfullscreen
+
+
+                    loading="lazy"
+
+
+                ></iframe>`;
+
+
+        }
+
+
+        
+
+
+        // Função para exibir metadados
+
+
+        function displayMetadata(file, exifData) {
+
+
+            // Informações básicas do arquivo
+
+
+            document.getElementById('fileName').textContent = file.name;
+
+
+            document.getElementById('fileSize').textContent = formatFileSize(file.size);
+
+
+            document.getElementById('fileType').textContent = file.type || 'Desconhecido';
+
+
+            
+
+
+            // Dimensões da imagem (já carregada no preview)
+
+
+            if (imagePreview.naturalWidth) {
+
+
+                document.getElementById('imageDimensions').textContent = 
+
+
+                    `${imagePreview.naturalWidth} × ${imagePreview.naturalHeight} pixels`;
+
+
+            }
+
+
+            
+
+
+            // Limpar classes de dados
+
+
+            document.querySelectorAll('.no-data').forEach(el => {
+
+
+                el.classList.remove('no-data');
+
+
+                el.classList.add('data-loaded');
+
+
+            });
+
+
+            
+
+
+            // Datas
+
+
+            document.getElementById('dateCreated').textContent = 
+
+
+                exifData.DateTimeOriginal ? formatDate(exifData.DateTimeOriginal) : '--';
+
+
+            document.getElementById('dateModified').textContent = 
+
+
+                exifData.DateTime ? formatDate(exifData.DateTime) : '--';
+
+
+            document.getElementById('dateDigitized').textContent = 
+
+
+                exifData.DateTimeDigitized ? formatDate(exifData.DateTimeDigitized) : '--';
+
+
+            
+
+
+            // Dados da câmera
+
+
+            document.getElementById('make').textContent = exifData.Make || '--';
+
+
+            document.getElementById('model').textContent = exifData.Model || '--';
+
+
+            
+
+
+            // Orientação
+
+
+            if (exifData.Orientation) {
+
+
+                const orientations = {
+
+
+                    1: 'Normal',
+
+
+                    2: 'Espelhado horizontal',
+
+
+                    3: 'Rotacionado 180°',
+
+
+                    4: 'Espelhado vertical',
+
+
+                    5: 'Espelhado horizontal + rotacionado 90° CCW',
+
+
+                    6: 'Rotacionado 90° CW',
+
+
+                    7: 'Espelhado horizontal + rotacionado 90° CW',
+
+
+                    8: 'Rotacionado 90° CCW'
+
+
+                };
+
+
+                document.getElementById('orientation').textContent = 
+
+
+                    `${exifData.Orientation} (${orientations[exifData.Orientation] || 'Desconhecido'})`;
+
+
+            } else {
+
+
+                document.getElementById('orientation').textContent = '--';
+
+
+            }
+
+
+            
+
+
+            // Configurações da câmera
+
+
+            let exposureText = '';
+
+
+            if (exifData.ExposureTime) exposureText += `${exifData.ExposureTime}s, `;
+
+
+            if (exifData.FNumber) exposureText += `f/${exifData.FNumber}, `;
+
+
+            if (exifData.ISOSpeedRatings) exposureText += `ISO ${exifData.ISOSpeedRatings}, `;
+
+
+            if (exifData.FocalLength) exposureText += `${exifData.FocalLength}mm`;
+
+
+            
+
+
+            document.getElementById('exposure').textContent = exposureText || '--';
+
+
+            
+
+
+            // Dados GPS
+
+
+            const gpsCoords = extractGPSCoordinates(exifData);
+
+
+            if (gpsCoords) {
+
+
+                document.getElementById('gpsData').textContent = 'Dados encontrados';
+
+
+                document.getElementById('gpsData').className = 'gps-info';
+
+
+                document.getElementById('gpsLat').textContent = gpsCoords.lat;
+
+
+                document.getElementById('gpsLat').className = 'gps-info';
+
+
+                document.getElementById('gpsLng').textContent = gpsCoords.lng;
+
+
+                document.getElementById('gpsLng').className = 'gps-info';
+
+
+                viewMapBtn.style.display = 'inline-flex';
+
+
+                
+
+
+                viewMapBtn.onclick = () => {
+
+
+                    updateMap(gpsCoords.lat, gpsCoords.lng);
+
+
+                    window.scrollTo({
+
+
+                        top: mapElement.offsetTop,
+
+
+                        behavior: 'smooth'
+
+
+                    });
+
+
+                };
+
+
+            } else {
+
+
+                document.getElementById('gpsData').textContent = 'Nenhum dado GPS encontrado';
+
+
+                document.getElementById('gpsData').className = 'no-data';
+
+
+                document.getElementById('gpsLat').textContent = '--';
+
+
+                document.getElementById('gpsLat').className = 'no-data';
+
+
+                document.getElementById('gpsLng').textContent = '--';
+
+
+                document.getElementById('gpsLng').className = 'no-data';
+
+
+                viewMapBtn.style.display = 'none';
+
+
+                mapElement.style.display = 'none';
+
+
+            }
+
+
+        }
+
+
+        
+
+
+        // Processar arquivo de imagem
+
+
+        function processImageFile(file) {
+
+
+            if (!file.type.match('image.*')) {
+
+
+                alert('Por favor, selecione um arquivo de imagem.');
+
+
+                return;
+
+
+            }
+
+
+            
+
+
+            // Exibir pré-visualização
+
+
+            const reader = new FileReader();
+
+
+            reader.onload = function(e) {
+
+
+                imagePreview.src = e.target.result;
+
+
+                imagePreview.style.display = 'block';
+
+
+                
+
+
+                // Quando a imagem carregar, pegar as dimensões
+
+
+                imagePreview.onload = function() {
+
+
+                    // Extrair metadados EXIF
+
+
+                    EXIF.getData(imagePreview, function() {
+
+
+                        try {
+
+
+                            const allMetaData = EXIF.getAllTags(this);
+
+
+                            console.log('Metadados EXIF:', allMetaData); // Para debug
+
+
+                            displayMetadata(file, allMetaData);
+
+
+                        } catch (error) {
+
+
+                            console.error('Erro ao ler metadados EXIF:', error);
+
+
+                            alert('Erro ao ler metadados da imagem. A imagem pode não conter dados EXIF.');
+
+
                             
-                            // Procurar por dados IPTC (0x0404)
-                            while (offset < dataView.byteLength - 12) {
-                                const tag = dataView.getUint16(offset);
-                                offset += 2;
-                                
-                                if (tag === 0x0404) { // IPTC tag
-                                    const iptcLength = dataView.getUint32(offset);
-                                    offset += 4
+
+
+                            // Mostrar pelo menos as informações básicas
+
+
+                            displayMetadata(file, {});
+
+
+                        }
+
+
+                    });
+
+
+                };
+
+
+            };
+
+
+            reader.readAsDataURL(file);
+
+
+        }
+
+
+        
+
+
+        // Evento de seleção de arquivo
+
+
+        fileInput.addEventListener('change', function(e) {
+
+
+            if (e.target.files.length > 0) {
+
+
+                processImageFile(e.target.files[0]);
+
+
+            }
+
+
+        });
+
+
+        
+
+
+        // Drag and drop
+
+
+        dropZone.addEventListener('dragover', function(e) {
+
+
+            e.preventDefault();
+
+
+            this.classList.add('dragover');
+
+
+        });
+
+
+        
+
+
+        dropZone.addEventListener('dragleave', function(e) {
+
+
+            e.preventDefault();
+
+
+            this.classList.remove('dragover');
+
+
+        });
+
+
+        
+
+
+        dropZone.addEventListener('drop', function(e) {
+
+
+            e.preventDefault();
+
+
+            this.classList.remove('dragover');
+
+
+            
+
+
+            if (e.dataTransfer.files.length > 0) {
+
+
+                processImageFile(e.dataTransfer.files[0]);
+
+
+            }
+
+
+        });
+
+
+        
+
+
+        // Inicialização
+
+
+        document.querySelectorAll('.no-data').forEach(el => {
+
+
+            el.textContent = '--';
+
+
+        });
+
+
+    </script>
+
+
+</body>
+
+
+</html>
